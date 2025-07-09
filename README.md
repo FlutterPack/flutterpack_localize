@@ -34,7 +34,7 @@ dependencies:
 Or once published to pub.dev:
 ```yaml
 dependencies:
-  localize: ^0.0.2
+  localize: ^0.0.3
 ```
 
 ### 2️⃣ Create Translation Files
@@ -83,6 +83,11 @@ flutter:
 
 ## 🛠️ Usage Example
 
+### Third party (Optional)
+```dart
+flutter pub add flutter_localizations --sdk=flutter
+```
+
 ### Initialize
 
 ```dart
@@ -119,7 +124,12 @@ class MyApp extends StatelessWidget {
                 Locale('fr'),
               ],
               localizationsDelegates: [
-                LocalizeConfig.delegate(),
+                FlutterPackLocalizeConfig.delegate(),
+
+                /// Optional
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
               ],
               home: HomePage(),
             );
@@ -133,32 +143,16 @@ class MyApp extends StatelessWidget {
 
 Example 2:
 ```dart
-/// main.dart
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:linkist/core/configs/intializer.dart';
-import 'package:linkist/core/injections/injections.dart';
-import 'package:linkist/core/localize/src/flutterpack_localize_config.dart';
-import 'package:linkist/core/localize/src/flutterpack_localize_file_loader.dart';
-import 'package:linkist/core/themes/lt_themes.dart';
-
 Future<void> main() async {
   // Initialize widget binding
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize dependencies
-  await init();
-
   // Initialize Localize (default to English)
   await FlutterPackLocalizeConfig.init(
-    const Locale('dz'),
+    const Locale('en'),
     persistLanguage: true,
     fileLoader: FlutterPackLocalizeFileLoader('assets/i18n'),
   );
-
-  // Set status bar style
-  if (GetPlatform.isAndroid) LTAppTheme.setStatusBarStyle();
 
   // Run the app
   runApp(const MyApp());
@@ -172,52 +166,31 @@ class MyApp extends StatelessWidget {
     return ValueListenableBuilder<Locale>(
       valueListenable: FlutterPackLocalizeConfig.currentLocale,
       builder: (context, locale, _) {
-        return MultiBlocProvider(
-          providers: [...providers()],
-          child: child(locale),
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Localization',
+          enableLog: true,
+          builder: EasyLoading.init(),
+          onGenerateRoute: onGenerateRoute,
+
+          // ✨ Localization
+          locale: locale,
+          supportedLocales: const [
+            Locale('en'),
+            Locale('fr')
+          ],
+          localizationsDelegates: [
+            FlutterPackLocalizeConfig.delegate(),
+
+            /// Optional
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
         );
       },
     );
   }
-}
-
-/// intializer.dart
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:linkist/core/constants/lt_texts.dart';
-import 'package:linkist/core/injections/injections.dart';
-import 'package:linkist/core/localize/src/flutterpack_localize_config.dart';
-import 'package:linkist/core/routes/routes.dart';
-import 'package:linkist/core/themes/lt_themes.dart';
-import 'package:linkist/features/authentication/presentation/bloc/authentication_bloc.dart';
-
-List<BlocProvider> providers() {
-  return [
-    BlocProvider<AuthenticationBloc>(create: (_) => sl<AuthenticationBloc>()),
-  ];
-}
-
-Widget child(Locale locale) {
-  return GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'Flutter Localization',
-    enableLog: true,
-    builder: EasyLoading.init(),
-    onGenerateRoute: onGenerateRoute,
-
-    // ✨ Localization
-    locale: locale,
-    supportedLocales: const [Locale('en'), Locale('dz'), Locale('fr')],
-    localizationsDelegates: [
-      FlutterPackLocalizeConfig.delegate(),
-      GlobalMaterialLocalizations.delegate,
-      GlobalWidgetsLocalizations.delegate,
-      GlobalCupertinoLocalizations.delegate,
-    ],
-  );
 }
 ```
 
@@ -321,16 +294,17 @@ Here’s a quick look at how `localize` compares to popular Flutter i18n solutio
 
 | Feature                           | **localize**        | [intl](https://pub.dev/packages/intl)        | [easy_localization](https://pub.dev/packages/easy_localization) | [get](https://pub.dev/packages/get) |
 |-----------------------------------|---------------------|---------------------------------------------|------------------------------------------------|-------------------------------------|
-| **Format**                        | JSON nested keys    | ARB files                                  | JSON / CSV                                    | JSON                                |
-| **Code generation required**      | ❌ None             | ✅ Yes                                      | ❌ No                                         | ❌ No                               |
-| **Lazy loading**                  | ✅ Yes              | ❌ No                                       | ⚠️ Partial                                   | ❌ No                               |
-| **Caching**                       | ✅ In-memory        | ❌ No                                       | ⚠️ Limited                                   | ⚠️ Limited                          |
-| **Pluralization**                 | ✅ Supported        | ✅ Supported                                | ✅ Supported                                  | ⚠️ Limited                          |
-| **Interpolation**                 | ✅ `{name}` syntax  | ✅ `{name}` syntax                          | ✅ `{name}` syntax                            | ✅ `{name}` syntax                  |
-| **Dynamic locale switching**      | ✅ Yes              | ⚠️ Manual rebuild                          | ✅ Yes                                       | ✅ Yes                              |
-| **Per-call persistence control**  | ✅ Yes              | ❌ No                                       | ❌ No                                        | ❌ No                               |
-| **Dependencies**                  | Minimal             | Medium                                      | Medium                                       | Medium                              |
-| **Learning curve**                | Super low          | Medium                                      | Medium                                       | Low                                 |
+| **Format**                        | JSON nested keys    | ARB files                                   | JSON / CSV                                     | JSON                                |
+| **Nested JSON keys**              | ✅ Yes (btn.add)	   | ❌ No (you must generate keys manually)	    | ✅ Yes                                         | ✅ Yes                              |
+| **Code generation required**      | ❌ None             | ✅ Yes                                      | ❌ No                                          | ❌ No                               |
+| **Lazy loading**                  | ✅ Yes              | ❌ No                                       | ⚠️ Partial                                     | ❌ No                               |
+| **Caching**                       | ✅ In-memory        | ❌ No                                       | ⚠️ Limited                                     | ⚠️ Limited                          |
+| **Pluralization**                 | ✅ Supported        | ✅ Supported                                | ✅ Supported                                   | ⚠️ Limited                          |
+| **Interpolation**                 | ✅ `{name}` syntax  | ✅ `{name}` syntax                          | ✅ `{name}` syntax                             | ✅ `{name}` syntax                  |
+| **Dynamic locale switching**      | ✅ Yes              | ⚠️ Manual rebuild                           | ✅ Yes                                         | ✅ Yes                              |
+| **Per-call persistence control**  | ✅ Yes              | ❌ No                                       | ❌ No                                          | ❌ No                               |
+| **Dependencies**                  | Minimal             | Medium                                      | Medium                                         | Medium                              |
+| **Learning curve**                | Super low           | Medium                                      | Medium                                         | Low                                 |
 
 ---
 
@@ -367,7 +341,7 @@ Feel free to:
 
 ## 💡 Example Apps
 
-We recommend you create a small demo app to see `localize` in action before integrating into production.
+We recommend you create a small demo app to see `flutterpack_localize` in action before integrating into production.
 
 ---
 

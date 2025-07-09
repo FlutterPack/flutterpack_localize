@@ -24,8 +24,8 @@ class FlutterPackLocalize {
     );
     assert(
       instance != null,
-      'Localize.of(context) called but no Localize found. '
-      'Did you add LocalizeConfig.delegate() in localizationsDelegates?',
+      'FlutterPackLocalize.of(context) called but no FlutterPackLocalize found. '
+      'Did you add FlutterPackLocalizeConfig.delegate() in localizationsDelegates?',
     );
     return instance!;
   }

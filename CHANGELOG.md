@@ -12,3 +12,7 @@
 ## [0.0.2] - 2025-07-09
 
 - Fixed dynamic hot reloading issue on language switch
+
+## [0.0.3] - 2025-07-09
+
+- Fixed assertion error message for ```Delegations```

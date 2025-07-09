@@ -37,7 +37,9 @@ class FlutterPackLocalizeFileLoader {
       return parsed;
     } catch (e) {
       if (kDebugMode) {
-        debugPrint('LocalizeFileLoader: Failed to load $code.json: $e');
+        debugPrint(
+          'FlutterPackLocalizeFileLoader: Failed to load $code.json: $e',
+        );
       }
       _cache[code] = {};
       return {};
