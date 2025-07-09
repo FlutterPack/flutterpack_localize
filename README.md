@@ -28,13 +28,13 @@ Add to your `pubspec.yaml`:
 dependencies:
   localize:
     git:
-      url: https://github.com/your-repo/localize.git
+      url: https://github.com/FlutterPack/localize.git
 ```
 
 Or once published to pub.dev:
 ```yaml
 dependencies:
-  localize: ^1.0.0
+  localize: ^0.0.2
 ```
 
 ### 2️⃣ Create Translation Files
@@ -86,10 +86,10 @@ flutter:
 ### Initialize
 
 ```dart
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await LocalizeConfig.init(
+  await FlutterPackLocalizeConfig.init(
     const Locale('en'),
     persistLanguage: true,
     fileLoader: LocalizeFileLoader('assets/i18n'),
@@ -101,6 +101,7 @@ void main() async {
 
 ### Provide Delegates and Reactive Locale
 
+Example 1:
 ```dart
 class MyApp extends StatelessWidget {
   @override
@@ -109,7 +110,7 @@ class MyApp extends StatelessWidget {
       valueListenable: LocalizeConfig.currentLocale,
       builder: (context, locale, _) {
         return ValueListenableBuilder(
-          valueListenable: LocalizeConfig.translationsNotifier,
+          valueListenable: FlutterPackLocalizeConfig.translationsNotifier,
           builder: (context, _, __) {
             return MaterialApp(
               locale: locale,
@@ -127,6 +128,96 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+```
+
+Example 2:
+```dart
+/// main.dart
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:linkist/core/configs/intializer.dart';
+import 'package:linkist/core/injections/injections.dart';
+import 'package:linkist/core/localize/src/flutterpack_localize_config.dart';
+import 'package:linkist/core/localize/src/flutterpack_localize_file_loader.dart';
+import 'package:linkist/core/themes/lt_themes.dart';
+
+Future<void> main() async {
+  // Initialize widget binding
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize dependencies
+  await init();
+
+  // Initialize Localize (default to English)
+  await FlutterPackLocalizeConfig.init(
+    const Locale('dz'),
+    persistLanguage: true,
+    fileLoader: FlutterPackLocalizeFileLoader('assets/i18n'),
+  );
+
+  // Set status bar style
+  if (GetPlatform.isAndroid) LTAppTheme.setStatusBarStyle();
+
+  // Run the app
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<Locale>(
+      valueListenable: FlutterPackLocalizeConfig.currentLocale,
+      builder: (context, locale, _) {
+        return MultiBlocProvider(
+          providers: [...providers()],
+          child: child(locale),
+        );
+      },
+    );
+  }
+}
+
+/// intializer.dart
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:linkist/core/constants/lt_texts.dart';
+import 'package:linkist/core/injections/injections.dart';
+import 'package:linkist/core/localize/src/flutterpack_localize_config.dart';
+import 'package:linkist/core/routes/routes.dart';
+import 'package:linkist/core/themes/lt_themes.dart';
+import 'package:linkist/features/authentication/presentation/bloc/authentication_bloc.dart';
+
+List<BlocProvider> providers() {
+  return [
+    BlocProvider<AuthenticationBloc>(create: (_) => sl<AuthenticationBloc>()),
+  ];
+}
+
+Widget child(Locale locale) {
+  return GetMaterialApp(
+    debugShowCheckedModeBanner: false,
+    title: 'Flutter Localization',
+    enableLog: true,
+    builder: EasyLoading.init(),
+    onGenerateRoute: onGenerateRoute,
+
+    // ✨ Localization
+    locale: locale,
+    supportedLocales: const [Locale('en'), Locale('dz'), Locale('fr')],
+    localizationsDelegates: [
+      FlutterPackLocalizeConfig.delegate(),
+      GlobalMaterialLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+    ],
+  );
 }
 ```
 
@@ -284,11 +375,5 @@ We recommend you create a small demo app to see `localize` in action before inte
 
 Questions or need help?  
 Open an issue or contact the maintainer.
-
----
-
-## 📝 License
-
-MIT License
 
 ---

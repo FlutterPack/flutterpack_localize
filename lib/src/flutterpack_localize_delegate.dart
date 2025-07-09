@@ -7,7 +7,7 @@ import 'flutterpack_localize_service.dart';
 /// ```dart
 /// MaterialApp(
 ///   localizationsDelegates: [
-///     LocalizeConfig.delegate(),
+///     FlutterPackLocalizeConfig.delegate(),
 ///   ],
 /// )
 /// ```
@@ -31,5 +31,7 @@ class FlutterPackLocalizeDelegate
   }
 
   @override
-  bool shouldReload(covariant FlutterPackLocalizeDelegate old) => false;
+  bool shouldReload(covariant FlutterPackLocalizeDelegate old) {
+    return old.translations != translations || old.newLocale != newLocale;
+  }
 }
