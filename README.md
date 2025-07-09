@@ -1,4 +1,4 @@
-# 📦 localize
+# 📦 flutterpack_localize
 
 A simple, powerful, and lazy-loading i18n package for Flutter apps, inspired by Angular's internationalization.  
 Supports **dynamic language switching**, **nested keys**, **pluralization**, and **parameter interpolation**.

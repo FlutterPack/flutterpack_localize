@@ -7,17 +7,17 @@ import 'package:flutter/foundation.dart';
 ///
 /// Example usage:
 /// ```dart
-/// final loader = LocalizeFileLoader('assets/i18n');
+/// final loader = FlutterPackLocalizeFileLoader('assets/i18n');
 /// final translations = await loader.load(Locale('en'));
 /// ```
-class LocalizeFileLoader {
+class FlutterPackLocalizeFileLoader {
   /// The directory containing locale JSON files.
   final String rootDir;
 
   /// In-memory cache.
   final Map<String, Map<String, dynamic>> _cache = {};
 
-  LocalizeFileLoader(this.rootDir) : assert(rootDir.isNotEmpty);
+  FlutterPackLocalizeFileLoader(this.rootDir) : assert(rootDir.isNotEmpty);
 
   /// Loads and caches translations for the given [locale].
   ///

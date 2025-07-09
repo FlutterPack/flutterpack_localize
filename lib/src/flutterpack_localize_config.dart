@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'localize_delegate.dart';
-import 'localize_service.dart';
-import 'localize_file_loader.dart';
+import 'flutterpack_localize_delegate.dart';
+import 'flutterpack_localize_service.dart';
+import 'flutterpack_localize_file_loader.dart';
 
 /// Manages the current locale, persistence, and lazy loading of translations.
 ///
@@ -11,13 +11,13 @@ import 'localize_file_loader.dart';
 ///
 /// Example usage:
 /// ```dart
-/// await LocalizeConfig.init(
+/// await FlutterPackLocalizeConfig.init(
 ///   Locale('en'),
 ///   persistLanguage: true,
-///   fileLoader: LocalizeFileLoader('assets/i18n'),
+///   fileLoader: FlutterPackLocalizeFileLoader('assets/i18n'),
 /// );
 /// ```
-class LocalizeConfig {
+class FlutterPackLocalizeConfig {
   /// Currently active locale wrapped in a [ValueNotifier].
   static late ValueNotifier<Locale> currentLocale;
 
@@ -26,7 +26,7 @@ class LocalizeConfig {
   static const String _storageKey = 'localize_selected_locale';
 
   /// Responsible for loading JSON translation files lazily.
-  static LocalizeFileLoader? _fileLoader;
+  static FlutterPackLocalizeFileLoader? _fileLoader;
 
   /// Cache for the last loaded translation map.
   static Map<String, dynamic> _currentTranslations = {};
@@ -42,7 +42,7 @@ class LocalizeConfig {
   static Future<void> init(
     Locale defaultLocale, {
     bool persistLanguage = false,
-    LocalizeFileLoader? fileLoader,
+    FlutterPackLocalizeFileLoader? fileLoader,
   }) async {
     _persistLanguage = persistLanguage;
     _fileLoader = fileLoader;
@@ -112,8 +112,8 @@ class LocalizeConfig {
   ///   LocalizeConfig.delegate(),
   /// ]
   /// ```
-  static LocalizationsDelegate<Localize> delegate() {
-    return LocalizeDelegate(
+  static LocalizationsDelegate<FlutterPackLocalize> delegate() {
+    return FlutterPackLocalizeDelegate(
       newLocale: currentLocale.value,
       translations: _currentTranslations,
     );

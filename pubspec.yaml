@@ -1,4 +1,4 @@
-name: localize
+name: flutterpack_localize
 description: "A powerful and flexible internationalization package for Flutter apps with interpolation, pluralization, and persistence."
 version: 0.0.1
 homepage: https://github.com/FlutterPack/localize

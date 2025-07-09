@@ -1,5 +1,5 @@
 /// Utility functions to resolve and interpolate translation keys.
-class LocalizeUtils {
+class FlutterPackLocalizeUtils {
   /// Resolves a nested key with optional pluralization.
   ///
   /// Example:

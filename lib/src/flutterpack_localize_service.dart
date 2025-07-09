@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'localize_utils.dart';
+import 'flutterpack_localize_utils.dart';
 
 /// Provides access to translations for a specific locale.
 ///
@@ -7,18 +7,21 @@ import 'localize_utils.dart';
 /// ```dart
 /// Localize.of(context).tr('key')
 /// ```
-class Localize {
+class FlutterPackLocalize {
   /// Active locale.
   final Locale locale;
 
   /// Cached translations.
   static Map<String, dynamic> _localizedStrings = {};
 
-  Localize(this.locale);
+  FlutterPackLocalize(this.locale);
 
   /// Access the current Localize instance.
-  static Localize of(BuildContext context) {
-    final instance = Localizations.of<Localize>(context, Localize);
+  static FlutterPackLocalize of(BuildContext context) {
+    final instance = Localizations.of<FlutterPackLocalize>(
+      context,
+      FlutterPackLocalize,
+    );
     assert(
       instance != null,
       'Localize.of(context) called but no Localize found. '
@@ -41,12 +44,12 @@ class Localize {
   /// tr('items', plural: 2)
   /// ```
   String tr(String key, {Map<String, String>? params, int? plural}) {
-    final resolved = LocalizeUtils.resolveKey(
+    final resolved = FlutterPackLocalizeUtils.resolveKey(
       _localizedStrings,
       key,
       plural: plural,
     );
     if (resolved == null) return '**$key**';
-    return LocalizeUtils.interpolate(resolved, params);
+    return FlutterPackLocalizeUtils.interpolate(resolved, params);
   }
 }

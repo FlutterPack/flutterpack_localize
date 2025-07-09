@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'localize_service.dart';
+import 'flutterpack_localize_service.dart';
 
 /// Flutter LocalizationsDelegate for injecting translations into the widget tree.
 ///
@@ -11,24 +11,25 @@ import 'localize_service.dart';
 ///   ],
 /// )
 /// ```
-class LocalizeDelegate extends LocalizationsDelegate<Localize> {
+class FlutterPackLocalizeDelegate
+    extends LocalizationsDelegate<FlutterPackLocalize> {
   /// The locale to use.
   final Locale? newLocale;
 
   /// The translations to load.
   final Map<String, dynamic>? translations;
 
-  const LocalizeDelegate({this.newLocale, this.translations});
+  const FlutterPackLocalizeDelegate({this.newLocale, this.translations});
 
   @override
   bool isSupported(Locale locale) => true;
 
   @override
-  Future<Localize> load(Locale locale) async {
-    Localize.loadFromMap(translations ?? {});
-    return Localize(newLocale ?? locale);
+  Future<FlutterPackLocalize> load(Locale locale) async {
+    FlutterPackLocalize.loadFromMap(translations ?? {});
+    return FlutterPackLocalize(newLocale ?? locale);
   }
 
   @override
-  bool shouldReload(covariant LocalizeDelegate old) => false;
+  bool shouldReload(covariant FlutterPackLocalizeDelegate old) => false;
 }

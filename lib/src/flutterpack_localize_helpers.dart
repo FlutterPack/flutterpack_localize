@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'localize_service.dart';
+import 'flutterpack_localize_service.dart';
 
 /// Convenience function for quickly translating strings.
 ///
@@ -14,5 +14,7 @@ String tr(
   Map<String, String>? params,
   int? plural,
 }) {
-  return Localize.of(context).tr(key, params: params, plural: plural);
+  return FlutterPackLocalize.of(
+    context,
+  ).tr(key, params: params, plural: plural);
 }
