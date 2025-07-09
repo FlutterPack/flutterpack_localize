@@ -5,7 +5,7 @@ import 'flutterpack_localize_utils.dart';
 ///
 /// You typically access this using:
 /// ```dart
-/// Localize.of(context).tr('key')
+/// FlutterPackLocalize.of(context).tr('key')
 /// ```
 class FlutterPackLocalize {
   /// Active locale.

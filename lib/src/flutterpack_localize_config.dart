@@ -109,7 +109,7 @@ class FlutterPackLocalizeConfig {
   /// Example:
   /// ```dart
   /// localizationsDelegates: [
-  ///   LocalizeConfig.delegate(),
+  ///   FlutterPackLocalizeConfig.delegate(),
   /// ]
   /// ```
   static LocalizationsDelegate<FlutterPackLocalize> delegate() {
