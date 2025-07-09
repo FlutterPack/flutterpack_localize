@@ -34,7 +34,7 @@ dependencies:
 Or once published to pub.dev:
 ```yaml
 dependencies:
-  flutterpack_localize: ^0.0.4
+  flutterpack_localize: ^0.0.5
 ```
 
 ### 2️⃣ Create Translation Files
@@ -207,7 +207,7 @@ class HomePage extends StatelessWidget {
         Text(tr(context, 'items', plural: 3)),
         ElevatedButton(
           onPressed: () {
-            LocalizeConfig.changeLocale(const Locale('fr'));
+            FlutterPackLocalizeConfig.changeLocale(const Locale('fr'));
           },
           child: Text('Switch to French'),
         ),
@@ -227,13 +227,13 @@ Use ```changeLocaleWithPreference```:
 
 ```dart
 // Switch to French and persist this choice
-await LocalizeConfig.changeLocaleWithPreference(
+await FlutterPackLocalizeConfig.changeLocaleWithPreference(
   const Locale('fr'),
   persist: true,
 );
 
 // Switch to English only for this session
-await LocalizeConfig.changeLocaleWithPreference(
+await FlutterPackLocalizeConfig.changeLocaleWithPreference(
   const Locale('en'),
   persist: false,
 );
@@ -243,35 +243,35 @@ await LocalizeConfig.changeLocaleWithPreference(
 
 ## 🧩 API Reference
 
-```LocalizeConfig.init```
+```FlutterPackLocalizeConfig.init```
 
 Initializes localization:
 
 ```dart
-await LocalizeConfig.init(
+await FlutterPackLocalizeConfig.init(
   Locale('en'),
   persistLanguage: true,
-  fileLoader: LocalizeFileLoader('assets/i18n'),
+  fileLoader: FlutterPackLocalizeFileLoader('assets/i18n'),
 );
 ```
 - persistLanguage: true — automatically remembers the user’s last selected language.
 
 - If persistLanguage is false, it always starts with your defaultLocale.
 
-```LocalizeConfig.changeLocale```
+```FlutterPackLocalizeConfig.changeLocale```
 
 Switches language (respecting ```persistLanguage```):
 
 ```dart
-await LocalizeConfig.changeLocale(Locale('fr'));
+await FlutterPackLocalizeConfig.changeLocale(Locale('fr'));
 ```
 
-```LocalizeConfig.changeLocaleWithPreference```
+```FlutterPackLocalizeConfig.changeLocaleWithPreference```
 
 Switches language and specifies whether to persist this change:
 
 ```dart
-await LocalizeConfig.changeLocaleWithPreference(
+await FlutterPackLocalizeConfig.changeLocaleWithPreference(
   Locale('fr'),
   persist: true,
 );
