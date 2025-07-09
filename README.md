@@ -34,7 +34,7 @@ dependencies:
 Or once published to pub.dev:
 ```yaml
 dependencies:
-  flutterpack_localize: ^0.0.5
+  flutterpack_localize: ^1.0.0
 ```
 
 ### 2️⃣ Create Translation Files
@@ -308,9 +308,9 @@ Here’s a quick look at how `localize` compares to popular Flutter i18n solutio
 
 ---
 
-## 🎯 When Should You Use `localize`?
+## 🎯 When Should You Use `flutterpack_localize`?
 
-**Choose `localize` if:**
+**Choose `flutterpack_localize` if:**
 - You want **Angular-style simplicity** without build steps.
 - You need **lazy loading** and **caching** to save memory.
 - You prefer **full control over persistence** for each user.
