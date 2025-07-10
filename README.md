@@ -34,7 +34,7 @@ dependencies:
 Or once published to pub.dev:
 ```yaml
 dependencies:
-  flutterpack_localize: ^1.0.0
+  flutterpack_localize: ^1.0.1
 ```
 
 ### 2️⃣ Create Translation Files
