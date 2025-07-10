@@ -28,7 +28,7 @@ Add to your `pubspec.yaml`:
 dependencies:
   localize:
     git:
-      url: https://github.com/FlutterPack/localize.git
+      url: https://github.com/FlutterPack/flutterpack_localize.git
 ```
 
 Or once published to pub.dev:
